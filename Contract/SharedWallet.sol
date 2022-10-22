@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
-
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol";
 
 contract SharedWallet {
     
+    using SafeMath for uint;
+
     event AllowanceChanged(address indexed _forWho,address indexed _fromWhom,  uint _oldAmount, uint _newAmount);
     event MoneySent(address indexed _beneficiary, uint _amount);
     event MoneyReceived(address indexed _from, uint _amount);
@@ -35,8 +37,8 @@ contract SharedWallet {
     }
 
     function reduceAllowance(address _who, uint _amount) internal {
-        emit AllowanceChanged(_who, msg.sender, allowance[_who], allowance[_who] - _amount);
-        allowance[_who] -= _amount;
+        emit AllowanceChanged(_who, msg.sender, allowance[_who], allowance[_who].sub(_amount));
+        allowance[_who] = allowance[_who].sub(_amount);
     }
 
 
