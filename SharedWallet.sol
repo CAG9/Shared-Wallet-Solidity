@@ -1,19 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
- 
-contract SharedWallet {
-    
-    address public owner;
 
-    constructor(){
-        owner = msg.sender;
-    }
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-    modifier onlyOwner(){
-        require(owner == msg.sender, "You are not allowed");
-        _;
-    }
-
+contract SharedWallet is Ownable {
 
     
     function withdrawMoney(address payable _to, uint _amount) public onlyOwner {
@@ -21,5 +11,4 @@ contract SharedWallet {
     }
 
     receive() external payable{}
-
 }
