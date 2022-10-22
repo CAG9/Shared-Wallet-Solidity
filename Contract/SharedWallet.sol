@@ -5,7 +5,9 @@ pragma solidity ^0.8.16;
 contract SharedWallet {
     
     event AllowanceChanged(address indexed _forWho,address indexed _fromWhom,  uint _oldAmount, uint _newAmount);
-    
+    event MoneySent(address indexed _beneficiary, uint _amount);
+    event MoneyReceived(address indexed _from, uint _amount);
+
     address public owner;
     mapping(address => uint) public allowance;
 
@@ -49,13 +51,12 @@ contract SharedWallet {
         if (!isOwner()){
             reduceAllowance(msg.sender, _amount);
         }
+        emit MoneySent(_to, _amount);
         _to.transfer(_amount);
     }
 
-    receive() external payable{}
-
-
-
-
+    receive() external payable{
+        emit MoneyReceived(msg.sender,msg.value);
+    }
 
 }
